@@ -1,0 +1,54 @@
+{
+  "tables": [
+    {
+      "id": "table1",
+      "columns": [
+        {
+          "type": "STRING",
+          "id": "MOL",
+          "displayName": "Molecule",
+          "rows": [
+            "CC1\u003dCC(\u003dO)C\u003dCC1\u003dO",
+            "OC1\u003dC(Cl)C\u003dC(C\u003dC1[N+]([O-])\u003dO)[N+]([O-])\u003dO"
+          ]
+        },
+        {
+          "type": "DOUBLE",
+          "id": "EXP_LOGP",
+          "displayName": "Experimental LOGP",
+          "rows": [
+            0.2,
+            2.15
+          ]
+        },
+        {
+          "type": "DOUBLE",
+          "id": "ACT_LOGP",
+          "displayName": "Actual LOGP",
+          "rows": [
+            0.4,
+            2.4
+          ]
+        }
+      ]
+    }
+  ],
+  "contents": [
+    {
+      "mdtext": "**Calculator-report of LOGP (1.0)**\n",
+      "type": "MDTEXT"
+    },
+    {
+      "mdtext": "**RMSE**: 0.23",
+      "type": "MDTEXT"
+    },
+    {
+      "mdtext": "**Pearson correlation**: 1.00",
+      "type": "MDTEXT"
+    },
+    {
+      "mdtext": "**Ranged delta distribution:**\nAcceptable   (     Δ \u003c 0.5)      : 100%\nDisputable   (0.5 \u003c Δ \u003c 1.0) : 0%\nUnacceptable (     Δ \u003e 1.0)      : 0%",
+      "type": "MDTEXT"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+call ./gradlew buildClient
+
+pause

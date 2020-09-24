@@ -1,0 +1,3 @@
+call ./gradlew test
+
+pause

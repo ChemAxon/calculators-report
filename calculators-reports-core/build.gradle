@@ -1,0 +1,88 @@
+
+if (!project.hasProperty('cxnJchemJar') && !project.hasProperty('cxnHubUser') && !project.hasProperty('cxnHubPass')) {
+    // Using Gluon (ChemAxon internal) environment for dependencies
+    apply plugin: 'cxn-gluon'
+    apply plugin: 'cxn-java'
+} else {
+    // Using ChemAxon public repository Hub (available for everyone) Hub or
+    // locally downloaded JChem jar
+    apply plugin: 'java'
+}
+
+sourceCompatibility = 1.8
+
+dependencies {
+    
+    if (project.hasProperty('cxnJchemJar')) {
+        // locally downloaded JChem distribution is used as the source of ChemAxon
+        // proprietary dependencies. Note that other non-ChemAxon dependencies are
+        // also shipped.
+        // note that resolution relative to subproject
+        compile files("../${cxnJchemJar}")
+        
+    } else if (project.hasProperty('cxnHubUser') || project.hasProperty('cxnHubPass')) {
+        // ChemAxon proprietary and other dependencies fetched from Hub
+        compile "com.chemaxon:calculations:${cxnHubReleaseVersion}"
+        compile "com.chemaxon:calculations-solubility:${cxnHubReleaseVersion}"
+        compile "com.chemaxon:jep:${cxnHubReleaseVersion}" 
+        compile "com.chemaxon:jchem-utils:${cxnHubReleaseVersion}"
+
+        compile "com.beust:jcommander:1.72"            // https://jcommander.org/
+        compile "com.google.code.gson:gson:2.8.5"      // https://github.com/google/gson
+        compile "org.apache.commons:commons-csv:1.7"   //CSV read
+        compile "org.slf4j:slf4j-api:1.7.29"
+        compile "org.slf4j:slf4j-log4j12:1.7.29"
+
+    } else {
+        compile "com.chemaxon:calculations:${cxnGluonDepsVersion}"
+        compile "com.chemaxon:calculations-solubility:${cxnGluonDepsVersion}"
+        compile "com.chemaxon:jep:${cxnGluonDepsVersion}" 
+        compile "com.chemaxon:jchem-utils:${cxnGluonDepsVersion}"
+
+        compile "com.beust:jcommander:1.72"            // https://jcommander.org/
+        compile "com.google.code.gson:gson:2.8.5"      // https://github.com/google/gson
+        compile "org.apache.commons:commons-csv:1.7"   //CSV read
+        compile "org.slf4j:slf4j-api:1.7.29"
+        compile "org.slf4j:slf4j-log4j12:1.7.29"
+
+    }
+
+    // the following dependencies are the same for all three environments since
+    // they are not shipped with JChem
+    compile 'org.apache.commons:commons-math3:3.5'
+    testCompile "junit:junit:4.12"
+    testCompile "org.hamcrest:hamcrest-all:1.3"
+    testCompile "com.nitorcreations:matchers:1.3"       //reflection asserts
+    testCompile "org.mockito:mockito-core:2.16.0"
+    
+    
+}
+
+// Create command line scripts
+task createScripts(dependsOn: classes) {
+    doLast {
+        def scriptsDir = file('../scripts')
+        scriptsDir.deleteDir();
+        scriptsDir.mkdir()
+
+        println()
+        println("Create launcher scripts (in root project):")
+        println()
+        
+        def createScript = { name, className ->
+            def script = new File(scriptsDir, name)
+
+            // do not add extra 'bin' dir to the classpath
+            script.text = String.format(
+                    'java -Xmx2g -classpath "%s" %s "$@"\n',
+                    (sourceSets.main.runtimeClasspath + sourceSets.test.runtimeClasspath + files('src/config')).asPath, className)
+            script.setExecutable(true)
+            
+            println("    scripts/" + name)
+        }
+
+        createScript 'dataset-writer.sh', 'com.chemaxon.calculations.reports.cli.DatasetWriterCLI'
+        createScript 'html-reporter.sh', 'com.chemaxon.calculations.reports.cli.HTMLReporterCLI'
+
+    }
+}

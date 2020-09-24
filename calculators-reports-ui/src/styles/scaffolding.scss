@@ -1,0 +1,25 @@
+@import '@/styles/variables.scss';
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $text-color;
+  margin: 0;
+  padding: 0;
+
+  a {
+    // text-decoration: none;
+    color: $text-color;
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+  code, kbd, samp {
+    display: inline-block;
+    padding: 1px 4px;
+    background-color: rgb(240, 240, 240);
+    border: 1px solid #CCC;
+    border-radius: 3px;
+  }
+}

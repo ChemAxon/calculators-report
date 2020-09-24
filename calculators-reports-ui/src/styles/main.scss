@@ -1,0 +1,36 @@
+@import '@/styles/variables.scss';
+@import '@/styles/scaffolding.scss';
+@import '@/styles/charts.scss';
+.app-header {
+  background-color: $header-bg-color;
+  padding: $gutter $gutter;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+}
+.app-footer {
+  background-color: $footer-bg-color;
+  padding: 3*$gutter;
+  margin-top: 2*$gutter;
+  color: $footer-font-color;
+  a {
+    color: $footer-link-color !important;
+  }
+}
+.content {
+  width: 100%;
+  margin: 20px 0;
+  // border-bottom: 1px solid rgb(228, 228, 228);
+}
+.inner-wrapper {
+  width: $site-width;
+  margin: auto;
+}
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  margin: $gutter/2 0;
+}
